@@ -1,6 +1,6 @@
 // Ative como 'true' para testar direto no GitHub Pages sem precisar do Java rodando
 const MOCK_MODE = true; 
-let timeLeft = 20 * 60; // 20 minutos em segundos
+let timeLeft = 5 * 60; // 20 minutos em segundos
 
 async function fetchWeatherData() {
     try {
@@ -66,7 +66,7 @@ setInterval(() => {
 }, 1000);
 
 // Atualização automática simulada a cada 20 minutos
-setInterval(fetchWeatherData, 20 * 60 * 1000);
+setInterval(fetchWeatherData, 5 * 60 * 1000);
 
 // Executa ao carregar
 fetchWeatherData();
