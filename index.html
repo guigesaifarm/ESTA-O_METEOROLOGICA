@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campifitech - Estação Meteorológica IoT</title>
+    <title>Campifitech - Estação Meteorológica & Monitoramento Ambiental Inteligente</title>
     <link rel="stylesheet" href="style.css">
     <!-- FontAwesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -12,20 +12,46 @@
 
     <header class="header">
         <div class="logo-container">
-            <!-- Insira a imagem da logo da Campifitech aqui -->
             <img src="Campifitech.png" alt="Campifitech Logo" class="company-logo">
-            <h1>Campifitech - Monitoramento Ambiental</h1>
+            <div>
+                <h1>Campifitech - Estação Meteorológica & Monitoramento Ambiental</h1>
+                <p class="subtitle-desc">
+                    Propriedades Rurais • Sensores Digitais • LoRaWAN (Off-Grid) & ESP32 (On-Grid) • Gestão GIS por Talhões (PostgreSQL)
+                </p>
+            </div>
         </div>
         <div class="update-info">
             <p><i class="fa-solid fa-clock-rotate-left"></i> Última atualização: <span id="last-update">--:--:--</span></p>
-            <p class="next-sync">Próxima atualização em: <span id="countdown">20:00</span></p>
+            <p class="next-sync">Próxima sincronização em: <span id="countdown">20:00</span></p>
         </div>
     </header>
+
+    <!-- Barra de Controle de Unidades e Talhões (GIS / PostgreSQL) -->
+    <section class="gis-selector-bar">
+        <div class="selector-group">
+            <label for="unit-select"><i class="fa-solid fa-farm"></i> Unidade Produtiva:</label>
+            <select id="unit-select" onchange="loadTalhoes()">
+                <option value="fazenda_norte">Fazenda Boa Vista (Norte)</option>
+                <option value="fazenda_sul">Fazenda Primavera (Sul)</option>
+            </select>
+        </div>
+        <div class="selector-group">
+            <label for="talhao-select"><i class="fa-solid fa-map-location-dot"></i> Talhão GIS:</label>
+            <select id="talhao-select" onchange="changeTalhaoData()">
+                <option value="talhao_01">Talhão 01 - Setor Café</option>
+                <option value="talhao_02">Talhão 02 - Irrigação Grãos</option>
+                <option value="talhao_03">Talhão 03 - Área de Preservação / Risco</option>
+            </select>
+        </div>
+        <div class="selector-group connectivity-badge">
+            <span id="conn-type" class="badge lorawan"><i class="fa-solid fa-tower-broadcast"></i> LoRaWAN (Off-Grid)</span>
+        </div>
+    </section>
 
     <main class="dashboard">
         <!-- Alerta de Incêndio -->
         <div id="fire-alert" class="alert-banner hidden">
-            <i class="fa-solid fa-triangle-exclamation"></i> ALERTA: Possível foco de incêndio detectado (Gás combustível elevado)!
+            <i class="fa-solid fa-triangle-exclamation"></i> ALERTA: Possível foco de incêndio detectado no talhão (Gás combustível elevado via sensor IoT)!
         </div>
 
         <div class="grid-container">
