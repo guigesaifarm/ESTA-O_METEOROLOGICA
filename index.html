@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campifitech - Estação Meteorológica IoT</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- FontAwesome para ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header class="header">
+        <div class="logo-container">
+            <!-- Insira a imagem da logo da Campifitech aqui -->
+            <img src="logo-campifitech.png" alt="Campifitech Logo" class="company-logo">
+            <h1>Campifitech - Monitoramento Ambiental</h1>
+        </div>
+        <div class="update-info">
+            <p><i class="fa-solid fa-clock-rotate-left"></i> Última atualização: <span id="last-update">--:--:--</span></p>
+            <p class="next-sync">Próxima atualização em: <span id="countdown">20:00</span></p>
+        </div>
+    </header>
+
+    <main class="dashboard">
+        <!-- Alerta de Incêndio -->
+        <div id="fire-alert" class="alert-banner hidden">
+            <i class="fa-solid fa-triangle-exclamation"></i> ALERTA: Possível foco de incêndio detectado (Gás combustível elevado)!
+        </div>
+
+        <div class="grid-container">
+            <!-- Vento: Velocidade -->
+            <div class="card">
+                <i class="fa-solid fa-wind card-icon"></i>
+                <h3>Velocidade do Vento</h3>
+                <p class="value" id="wind-speed">-- <span class="unit">km/h</span></p>
+            </div>
+
+            <!-- Vento: Direção -->
+            <div class="card">
+                <i class="fa-solid fa-compass card-icon"></i>
+                <h3>Direção do Vento</h3>
+                <p class="value" id="wind-dir">---</p>
+            </div>
+
+            <!-- Temperatura do Ar -->
+            <div class="card">
+                <i class="fa-solid fa-temperature-high card-icon"></i>
+                <h3>Temperatura do Ar</h3>
+                <p class="value" id="air-temp">-- <span class="unit">°C</span></p>
+            </div>
+
+            <!-- Umidade do Ar -->
+            <div class="card">
+                <i class="fa-solid fa-droplet card-icon"></i>
+                <h3>Umidade do Ar</h3>
+                <p class="value" id="air-humidity">-- <span class="unit">%</span></p>
+            </div>
+
+            <!-- Temperatura do Solo -->
+            <div class="card">
+                <i class="fa-solid fa-earth-americas card-icon"></i>
+                <h3>Temperatura do Solo</h3>
+                <p class="value" id="soil-temp">-- <span class="unit">°C</span></p>
+            </div>
+
+            <!-- Umidade do Solo -->
+            <div class="card">
+                <i class="fa-solid fa-seedling card-icon"></i>
+                <h3>Umidade do Solo</h3>
+                <p class="value" id="soil-humidity">-- <span class="unit">%</span></p>
+            </div>
+
+            <!-- Gás Combustível / Incêndio -->
+            <div class="card" id="gas-card">
+                <i class="fa-solid fa-fire-flame-curved card-icon"></i>
+                <h3>Gás Combustível (Risco)</h3>
+                <p class="value" id="gas-level">-- <span class="unit">PPM</span></p>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
