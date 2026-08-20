@@ -25,7 +25,7 @@ async function fetchWeatherData() {
         }
         
         updateUI(data);
-        timeLeft = 20 * 60; // Reseta o cronômetro
+        timeLeft = 5 * 60; // Reseta o cronômetro
         document.getElementById('last-update').innerText = new Date().toLocaleTimeString();
     } catch (error) {
         console.error('Falha na comunicação:', error);
