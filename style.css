@@ -128,3 +128,55 @@ body {
     50% { opacity: 0.6; }
     100% { opacity: 1; }
 }
+.subtitle-desc {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-top: 4px;
+    font-weight: normal;
+}
+
+.gis-selector-bar {
+    max-width: 1200px;
+    margin: 0 auto 20px auto;
+    background: var(--card-bg);
+    padding: 15px 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.selector-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.selector-group select {
+    padding: 8px 12px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background-color: #f8fafc;
+    color: var(--primary);
+    font-weight: 500;
+}
+
+.badge {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: white;
+}
+
+.badge.lorawan {
+    background-color: #0284c7; /* Azul LoRaWAN */
+}
+
+.badge.esp32 {
+    background-color: #16a34a; /* Verde ESP32 On-Grid */
+}
