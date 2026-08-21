@@ -6,6 +6,7 @@
     --text: #334155;
     --danger: #dc2626;
     --success: #16a34a;
+    --warning: #ca8a04;
 }
 
 * {
@@ -29,7 +30,7 @@ body {
     padding: 20px 30px;
     border-radius: 12px;
     box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-    margin-bottom: 25px;
+    margin-bottom: 20px;
 }
 
 .logo-container {
@@ -39,18 +40,24 @@ body {
 }
 
 .company-logo {
-    max-height: 350px;
+    max-height: 70px;
     width: auto;
 }
 
 .header h1 {
-    font-size: 1.9rem;
+    font-size: 1.8rem;
     color: var(--primary);
+}
+
+.subtitle-desc {
+    font-size: 1rem;
+    color: #64748b;
+    margin-top: 4px;
 }
 
 .update-info {
     text-align: right;
-    font-size: 1.3rem;
+    font-size: 1rem;
     color: #64748b;
 }
 
@@ -59,84 +66,9 @@ body {
     color: var(--accent);
 }
 
-.dashboard {
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
-.alert-banner {
-    background-color: var(--danger);
-    color: white;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 20px;
-    animation: pulse 1.5s infinite;
-}
-
-.alert-banner.hidden {
-    display: none;
-}
-
-.grid-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
-}
-
-.card {
-    background: var(--card-bg);
-    padding: 25px;
-    border-radius: 12px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
-    text-align: center;
-    position: relative;
-    border-top: 4px solid var(--accent);
-}
-
-.card-icon {
-    font-size: 2.4rem;
-    color: var(--accent);
-    margin-bottom: 10px;
-}
-
-.card h3 {
-    font-size: 1.4rem;
-    color: #64748b;
-    margin-bottom: 15px;
-}
-
-.value {
-    font-size: 2.4rem;
-    font-weight: bold;
-    color: var(--primary);
-}
-
-.unit {
-    font-size: 1.3rem;
-    color: #94a3b8;
-}
-
-.danger-card {
-    border-top-color: var(--danger) !important;
-    background-color: #fef2f2;
-}
-
-@keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.6; }
-    100% { opacity: 1; }
-}
-.subtitle-desc {
-    font-size: 1.2rem;
-    color: #64748b;
-    margin-top: 4px;
-    font-weight: normal;
-}
-
+/* Barra GIS / Seletores */
 .gis-selector-bar {
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto 20px auto;
     background: var(--card-bg);
     padding: 15px 25px;
@@ -153,7 +85,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 600;
 }
 
@@ -167,16 +99,245 @@ body {
 }
 
 .badge {
-    padding: 6px 12px;
+    padding: 6px 14px;
     border-radius: 20px;
-    font-size: 1.2rem;
+    font-size: 1rem;
     color: white;
 }
+.badge.lorawan { background-color: #0284c7; }
+.badge.esp32 { background-color: #16a34a; }
 
-.badge.lorawan {
-    background-color: #0284c7; /* Azul LoRaWAN */
+/* Layout Grid Principal: Esquerda Dashboard | Direita Mapa QGIS */
+.main-content-layout {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
 }
 
-.badge.esp32 {
-    background-color: #16a34a; /* Verde ESP32 On-Grid */
+@media (max-width: 1024px) {
+    .main-content-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+.dashboard-column {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Painel Superior: Imagem da Estação + Controles */
+.top-info-panel {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .top-info-panel {
+        grid-template-columns: 1fr;
+    }
+}
+
+.station-image-card, .actions-control-card, .qgis-card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+}
+
+.station-image-card img {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.img-caption {
+    display: block;
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: #64748b;
+    text-align: center;
+    font-weight: 600;
+}
+
+.actions-control-card h3 {
+    font-size: 1.2rem;
+    color: var(--primary);
+    margin-bottom: 5px;
+}
+
+.actions-control-card p {
+    font-size: 0.95rem;
+    color: #64748b;
+    margin-bottom: 15px;
+}
+
+.control-action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+/* Botões Customizados */
+.btn-action {
+    padding: 8px 14px;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+.btn-action:hover { opacity: 0.9; }
+.btn-success { background-color: var(--success); }
+.btn-warning { background-color: var(--warning); }
+.btn-danger { background-color: var(--danger); }
+.btn-danger-action { background-color: white; color: var(--danger); border: 1px solid var(--danger); margin-left: 10px; }
+
+/* Alerta */
+.alert-banner {
+    background-color: var(--danger);
+    color: white;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: bold;
+    animation: pulse 1.5s infinite;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.alert-banner.hidden { display: none; }
+
+/* Cards de Sensores Meteorológicos */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 15px;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    text-align: center;
+    border-top: 4px solid var(--accent);
+}
+
+.card-icon {
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 8px;
+}
+
+.card h3 {
+    font-size: 1rem;
+    color: #64748b;
+    margin-bottom: 10px;
+}
+
+.value {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.unit {
+    font-size: 1rem;
+    color: #94a3b8;
+}
+
+.danger-card {
+    border-top-color: var(--danger) !important;
+    background-color: #fef2f2;
+}
+
+/* Coluna QGIS / Mapa à Direita */
+.qgis-map-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.qgis-card h3 {
+    font-size: 1.2rem;
+    color: var(--primary);
+    margin-bottom: 4px;
+}
+
+.map-sub {
+    font-size: 0.9rem;
+    color: #64748b;
+    margin-bottom: 12px;
+}
+
+.map-container-simulated {
+    width: 100%;
+    height: 420px;
+    background: #e2e8f0;
+    border-radius: 8px;
+    position: relative;
+    overflow: hidden;
+    background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+    background-size: 20px 20px;
+    border: 1px solid #cbd5e1;
+}
+
+.gis-overlay-grid {
+    position: absolute;
+    width: 60%;
+    height: 50%;
+    top: 25%;
+    left: 20%;
+    border: 2px dashed var(--accent);
+    background: rgba(37, 99, 235, 0.1);
+    border-radius: 6px;
+}
+
+.gis-marker {
+    position: absolute;
+    top: 45%;
+    left: 40%;
+    background: var(--primary);
+    color: white;
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    border-radius: 4px;
+    font-weight: bold;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.gis-coords {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 3px 8px;
+    font-size: 0.75rem;
+    border-radius: 4px;
+    color: #475569;
+    font-weight: 600;
+}
+
+.qgis-legend {
+    display: flex;
+    justify-content: space-around;
+    margin-top: 15px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
 }
