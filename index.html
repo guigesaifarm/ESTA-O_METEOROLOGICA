@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Campifitech - Estação Meteorológica & Monitoramento Ambiental Inteligente</title>
+    <title>Campifitech Agrotech 5.0 - Estação Meteorológica & GIS</title>
     <link rel="stylesheet" href="style.css">
     <!-- FontAwesome para ícones -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,33 +14,33 @@
         <div class="logo-container">
             <img src="Campifitech.png" alt="Campifitech Logo" class="company-logo">
             <div>
-                <h1>Campifitech - Estação Meteorológica & Monitoramento Ambiental</h1>
+                <h1>Campifitech Agrotech 5.0</h1>
                 <p class="subtitle-desc">
-                    Propriedades Rurais • Sensores Digitais • LoRaWAN (Off-Grid) & ESP32 (On-Grid) • Gestão GIS por Talhões (PostgreSQL)
+                    Propriedades Rurais • Sensores Digitais • LoRaWAN (Off-Grid) & ESP32 (On-Grid) • Gestão GIS por Talhões
                 </p>
             </div>
         </div>
         <div class="update-info">
             <p><i class="fa-solid fa-clock-rotate-left"></i> Última atualização: <span id="last-update">--:--:--</span></p>
-            <p class="next-sync">Próxima sincronização em: <span id="countdown">20:00</span></p>
+            <p class="next-sync">Próxima sincronização: <span id="countdown">20:00</span></p>
         </div>
     </header>
 
-    <!-- Barra de Controle de Unidades e Talhões (GIS / PostgreSQL) -->
+    <!-- Barra de Controle de Unidades e Talhões -->
     <section class="gis-selector-bar">
         <div class="selector-group">
-            <label for="unit-select"><i class="fa-solid fa-farm"></i> Unidade Produtiva:</label>
+            <label for="unit-select"><i class="fa-solid fa-farm"></i> Unidade:</label>
             <select id="unit-select" onchange="loadTalhoes()">
                 <option value="fazenda_norte">Fazenda Boa Vista (Norte)</option>
                 <option value="fazenda_sul">Fazenda Primavera (Sul)</option>
             </select>
         </div>
         <div class="selector-group">
-            <label for="talhao-select"><i class="fa-solid fa-map-location-dot"></i> Talhão GIS:</label>
+            <label for="talhao-select"><i class="fa-solid fa-map-location-dot"></i> Talhão:</label>
             <select id="talhao-select" onchange="changeTalhaoData()">
                 <option value="talhao_01">Talhão 01 - Setor Café</option>
                 <option value="talhao_02">Talhão 02 - Irrigação Grãos</option>
-                <option value="talhao_03">Talhão 03 - Área de Preservação / Risco</option>
+                <option value="talhao_03">Talhão 03 - Área de Preservação</option>
             </select>
         </div>
         <div class="selector-group connectivity-badge">
@@ -48,62 +48,99 @@
         </div>
     </section>
 
-    <main class="dashboard">
-        <!-- Alerta de Incêndio -->
-        <div id="fire-alert" class="alert-banner hidden">
-            <i class="fa-solid fa-triangle-exclamation"></i> ALERTA: Possível foco de incêndio detectado no talhão (Gás combustível elevado via sensor IoT)!
+    <!-- Layout Principal: Dashboard à Esquerda/Centro e Mapa QGIS à Direita -->
+    <main class="main-content-layout">
+        
+        <!-- Coluna Esquerda: Alerta, Imagem da Estação, Controles de Atuação e Cards de Sensores -->
+        <div class="dashboard-column">
+            
+            <!-- Alerta de Incêndio -->
+            <div id="fire-alert" class="alert-banner hidden">
+                <i class="fa-solid fa-triangle-exclamation"></i> ALERTA: Foco de incêndio detectado! 
+                <button class="btn-action btn-danger-action" onclick="ativarCombateIncendio()">Ativar Sistema de Combate</button>
+            </div>
+
+            <!-- Bloco Superior: Imagem da Estação + Painel de Ações Rápidas -->
+            <div class="top-info-panel">
+                <div class="station-image-card">
+                    <img src="estacao_meteorologica.jpg" alt="Estação Meteorológica Campifitech" id="station-img">
+                    <span class="img-caption"><i class="fa-solid fa-camera"></i> Estação IoT Ativa no Talhão</span>
+                </div>
+                <div class="actions-control-card">
+                    <h3><i class="fa-solid fa-sliders"></i> Controles Dinâmicos</h3>
+                    <p>Gerencie atuadores remotos instantaneamente:</p>
+                    
+                    <div class="control-action-row">
+                        <span>Bomba de Irrigação:</span>
+                        <button id="btn-irrigacao" class="btn-action btn-success" onclick="toggleIrrigacao()">Ligar Irrigação</button>
+                    </div>
+                    
+                    <div class="control-action-row">
+                        <span>Combate a Incêndio:</span>
+                        <button id="btn-incendio" class="btn-action btn-danger" onclick="ativarCombateIncendio()">Disparar Supressão</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grade de Cards Meteorológicos -->
+            <div class="grid-container">
+                <div class="card">
+                    <i class="fa-solid fa-wind card-icon"></i>
+                    <h3>Velocidade do Vento</h3>
+                    <p class="value" id="wind-speed">-- <span class="unit">km/h</span></p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-compass card-icon"></i>
+                    <h3>Direção do Vento</h3>
+                    <p class="value" id="wind-dir">---</p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-temperature-high card-icon"></i>
+                    <h3>Temperatura do Ar</h3>
+                    <p class="value" id="air-temp">-- <span class="unit">°C</span></p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-droplet card-icon"></i>
+                    <h3>Umidade do Ar</h3>
+                    <p class="value" id="air-humidity">-- <span class="unit">%</span></p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-earth-americas card-icon"></i>
+                    <h3>Temperatura do Solo</h3>
+                    <p class="value" id="soil-temp">-- <span class="unit">°C</span></p>
+                </div>
+                <div class="card">
+                    <i class="fa-solid fa-seedling card-icon"></i>
+                    <h3>Umidade do Solo</h3>
+                    <p class="value" id="soil-humidity">-- <span class="unit">%</span></p>
+                </div>
+                <div class="card" id="gas-card">
+                    <i class="fa-solid fa-fire-flame-curved card-icon"></i>
+                    <h3>Gás Combustível</h3>
+                    <p class="value" id="gas-level">-- <span class="unit">PPM</span></p>
+                </div>
+            </div>
         </div>
 
-        <div class="grid-container">
-            <!-- Vento: Velocidade -->
-            <div class="card">
-                <i class="fa-solid fa-wind card-icon"></i>
-                <h3>Velocidade do Vento</h3>
-                <p class="value" id="wind-speed">-- <span class="unit">km/h</span></p>
+        <!-- Coluna Direita: Mapa QGIS Dinâmico do Talhão Selecionado -->
+        <aside class="qgis-map-column">
+            <div class="qgis-card">
+                <h3><i class="fa-solid fa-map"></i> Monitoramento GIS (QGIS Web)</h3>
+                <p id="map-subtitle" class="map-sub">Visualizando: Fazenda Boa Vista - Talhão 01</p>
+                <div class="map-container-simulated" id="qgis-view">
+                    <!-- Simulador visual de camada vetorial GIS -->
+                    <div class="gis-overlay-grid"></div>
+                    <div class="gis-marker" id="marker-talhao">Talhão Ativo</div>
+                    <span class="gis-coords">Lat: -21.1767, Long: -47.8208</span>
+                </div>
+                <div class="qgis-legend">
+                    <span><i class="fa-solid fa-square" style="color: #16a34a;"></i> Saudável</span>
+                    <span><i class="fa-solid fa-square" style="color: #ca8a04;"></i> Atenção Hídrica</span>
+                    <span><i class="fa-solid fa-square" style="color: #dc2626;"></i> Risco Crítico</span>
+                </div>
             </div>
+        </aside>
 
-            <!-- Vento: Direção -->
-            <div class="card">
-                <i class="fa-solid fa-compass card-icon"></i>
-                <h3>Direção do Vento</h3>
-                <p class="value" id="wind-dir">---</p>
-            </div>
-
-            <!-- Temperatura do Ar -->
-            <div class="card">
-                <i class="fa-solid fa-temperature-high card-icon"></i>
-                <h3>Temperatura do Ar</h3>
-                <p class="value" id="air-temp">-- <span class="unit">°C</span></p>
-            </div>
-
-            <!-- Umidade do Ar -->
-            <div class="card">
-                <i class="fa-solid fa-droplet card-icon"></i>
-                <h3>Umidade do Ar</h3>
-                <p class="value" id="air-humidity">-- <span class="unit">%</span></p>
-            </div>
-
-            <!-- Temperatura do Solo -->
-            <div class="card">
-                <i class="fa-solid fa-earth-americas card-icon"></i>
-                <h3>Temperatura do Solo</h3>
-                <p class="value" id="soil-temp">-- <span class="unit">°C</span></p>
-            </div>
-
-            <!-- Umidade do Solo -->
-            <div class="card">
-                <i class="fa-solid fa-seedling card-icon"></i>
-                <h3>Umidade do Solo</h3>
-                <p class="value" id="soil-humidity">-- <span class="unit">%</span></p>
-            </div>
-
-            <!-- Gás Combustível / Incêndio -->
-            <div class="card" id="gas-card">
-                <i class="fa-solid fa-fire-flame-curved card-icon"></i>
-                <h3>Gás Combustível (Risco)</h3>
-                <p class="value" id="gas-level">-- <span class="unit">PPM</span></p>
-            </div>
-        </div>
     </main>
 
     <script src="script.js"></script>
